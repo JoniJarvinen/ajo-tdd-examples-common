@@ -7,11 +7,25 @@
          bootstrap="vendor/autoload.php"
          failOnRisky="true"
          failOnWarning="true"
-         cacheResultFile="var/phpunit/phpunit.result.cache"
+         cacheResultFile="var/phpunit/cache/phpunit.result.cache"
 >
     <testsuites>
         <testsuite name="All Tests">
             <directory>Tests</directory>
         </testsuite>
     </testsuites>
+    <coverage cacheDirectory="var/phpunit/cache"
+          includeUncoveredFiles="true"
+          processUncoveredFiles="true"
+          pathCoverage="false"
+          ignoreDeprecatedCodeUnits="true"
+          disableCodeCoverageIgnore="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <report>
+            <text outputFile="var/phpunit/coverage/result.txt" />
+            <html outputDirectory="var/phpunit/coverage-html" />
+        </report>
+    </coverage>
 </phpunit>
