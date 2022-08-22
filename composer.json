@@ -1,0 +1,30 @@
+{
+    "name": "jonijarvinen/ajo-tdd-examples-common",
+    "description": "Alma Ajo TDD Examples, Common building blocks",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Joni Järvinen",
+            "email": "joni.jarvinen@almamedia.fi"
+        }
+    ],
+    "require": {
+        "ramsey/uuid": "~4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ajo\\Tdd\\Examples\\Common\\": "src/"
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ajo\\Tdd\\Examples\\Common\\Tests\\": "/Tests/"
+        }
+    }
+}
