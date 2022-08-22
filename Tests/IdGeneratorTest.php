@@ -28,7 +28,7 @@ class IdGeneratorTest extends TestCase
     private function idGeneratorImplementations()
     {
         return [
-            'UUID Generator' => [new UuidGenerator()]
+            'UUID Generator' => [new UuidGenerator()] 
         ];
     }
 }
