@@ -6,5 +6,5 @@ namespace Ajo\Tdd\Examples\Common;
 
 interface Equatable
 {
-    public function equals(Equatable $value) : bool;
+    public function equals(Equatable $value): bool;
 }

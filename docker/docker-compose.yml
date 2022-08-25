@@ -1,0 +1,22 @@
+services:
+  marketplace:
+    build:
+      dockerfile: docker/Dockerfile.marketplace
+      context: ..
+    ports:
+        - "127.0.0.1:80:8080"
+    mem_limit: 250m
+    depends_on:
+      - mariadb
+    volumes:
+      - ./src/:/var/projects/marketplace/src
+      - ./Tests/:/var/projects/marketplace/Tests
+    command: composer update --no-interaction --no-progress
+    working_dir: /var/projects/marketplace
+  mariadb:
+    build:
+      dockerfile: docker/Dockerfile.mariadb
+      context: ..
+    mem_limit: 250m
+    volumes:
+        - ./database/:/var/projects/marketplace/database

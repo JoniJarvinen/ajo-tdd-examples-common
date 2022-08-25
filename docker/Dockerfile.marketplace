@@ -1,0 +1,6 @@
+FROM trafex/php-nginx:latest
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+RUN apk add --no-cache \
+  php81-xmlwriter
