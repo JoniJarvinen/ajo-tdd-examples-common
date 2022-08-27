@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Ajo\Tdd\Examples\Common\Tests;
 
+use Ajo\Tdd\Examples\Common\Infrastructure\Time\DateTime;
 use Ajo\Tdd\Examples\Common\Tests\TestValueObjects\OneLevelValueObject;
 use Ajo\Tdd\Examples\Common\Tests\TestValueObjects\ThreeLevelValueObject;
 use Ajo\Tdd\Examples\Common\Tests\TestValueObjects\TwoLevelValueObject;
 use Ajo\Tdd\Examples\Common\ValueObjects\AbstractValueObject;
-use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class ValueObjectTest extends TestCase
@@ -33,11 +33,12 @@ class ValueObjectTest extends TestCase
 
     private function equalValueObjects(): array
     {
-        $testDate = new DateTime('now');
+        $testDate1 = new DateTime('2022-01-01 00:00:01');
+        $testDate2 = new DateTime('2022-01-01 00:00:01');
         $oneLevel1 = new OneLevelValueObject('Test', 1.25);
         $oneLevel2 = new OneLevelValueObject('Test', 1.25);
-        $nested1 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate);
-        $nested2 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate);
+        $nested1 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate1);
+        $nested2 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate2);
         $multiNested1 = new ThreeLevelValueObject($nested1, $nested2, 'Test');
         $multiNested2 = new ThreeLevelValueObject($nested1, $nested2, 'Test');
 
@@ -53,10 +54,12 @@ class ValueObjectTest extends TestCase
 
     private function notEqualValueObjects(): array
     {
+        $testDate1 = new DateTime('2022-01-01 00:00:01');
+        $testDate2 = new DateTime('2022-01-01 00:00:02');
         $oneLevel1 = new OneLevelValueObject('Test', 6.66);
         $oneLevel2 = new OneLevelValueObject('Test', 6.65);
-        $twoLevel1 = new TwoLevelValueObject($oneLevel1, $oneLevel1, new DateTime('now'));
-        $twoLevel2 = new TwoLevelValueObject($oneLevel1, $oneLevel1, new DateTime('now'));
+        $twoLevel1 = new TwoLevelValueObject($oneLevel1, $oneLevel1, $testDate1);
+        $twoLevel2 = new TwoLevelValueObject($oneLevel1, $oneLevel1, $testDate2);
         return [
             'One level value object' => [$oneLevel1, $oneLevel2],
             'Nested value object' => [$twoLevel1, $twoLevel2]
