@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ajo\Tdd\Examples\Common\ValueObjects;
+namespace Ajo\Tdd\Examples\Common\Domain;
 
+use Ajo\Tdd\Examples\Common\ValueObjects\AbstractValueObject;
 use InvalidArgumentException;
 use Stringable;
 
