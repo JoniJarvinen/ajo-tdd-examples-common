@@ -18,10 +18,12 @@ abstract class AbstractId extends ValueObject implements Stringable
         }
     }
 
-    public function equals(Equatable $value): bool
+    public function equals($value): bool
     {
-        if(!$value instanceof static)
-        {
+        if (
+            $value === null ||
+            !$value instanceof static
+        ) {
             return false;
         }
         return $this->id === $value->id;

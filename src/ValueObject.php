@@ -6,5 +6,5 @@ namespace Ajo\Tdd\Examples\Common;
 
 abstract class ValueObject implements Equatable
 {
-    abstract public function equals(Equatable $value): bool;
+    abstract public function equals($value): bool;
 }
