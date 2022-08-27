@@ -10,31 +10,35 @@ use ReflectionProperty;
 
 abstract class AbstractValueObject implements Equatable
 {
-    public function equals($value): bool
+    public function equals(mixed $that): bool
     {
         if (
-            $value === null ||
-            !$value instanceof static
+            $that === null ||
+            !$that instanceof static
         ) {
             return false;
         }
 
-        $valueObjectReflection = new ReflectionClass($this);
-        $encapsulatedProperties = $valueObjectReflection->getProperties(
+        $thisReflection = new ReflectionClass(static::class);
+        $thatReflection = new ReflectionClass($that);
+
+        $thisEncapsulatedProperties = $thisReflection->getProperties(
             ReflectionProperty::IS_PRIVATE |
             ReflectionProperty::IS_PROTECTED |
             ReflectionProperty::IS_READONLY
         );
+
         $hasUnequalPropery = false;
 
-        foreach($encapsulatedProperties as $property)
+        foreach($thisEncapsulatedProperties as $thisProperty)
         {
-            $propertyName = $property->getName();
-            if($this->{$propertyName} instanceof Equatable)
+            $thisPropertyValue = $thisProperty->getValue($this);
+            $thatPropertyValue = $thatReflection->getProperty($thisProperty->getName())->getValue($that);
+            if($thisPropertyValue instanceof Equatable)
             {
-                $hasUnequalPropery = !$this->{$propertyName}->equals($value?->{$propertyName});
+                $hasUnequalPropery = !$thisPropertyValue->equals($thatPropertyValue);
             } else {
-                $hasUnequalPropery = $this->{$propertyName} !== $value?->{$propertyName};
+                $hasUnequalPropery = $thisPropertyValue !== $thatPropertyValue;
             }
             if($hasUnequalPropery === true)
             {
