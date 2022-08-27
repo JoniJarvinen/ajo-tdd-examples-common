@@ -17,33 +17,37 @@ class ValueObjectTest extends TestCase
      * @test
      * @dataProvider equalValueObjects
      */
-    public function should_be_equal(AbstractValueObject $value1, AbstractValueObject $value2)
+    public function should_be_equal(AbstractValueObject $valueObject, mixed $compareTo)
     {
-        $this->assertTrue($value1->equals($value2), sprintf('Value object %s should have been considered equal to Value object %s', $value1::class, $value2::class));
+        $this->assertTrue($valueObject->equals($compareTo), sprintf('Value object: "%s" should have been considered equal to: "%s"', $valueObject::class, gettype($compareTo)));
     }
 
     /**
      * @test
      * @dataProvider notEqualValueObjects
      */
-    public function should_not_be_equal(AbstractValueObject $value1, AbstractValueObject $value2)
+    public function should_not_be_equal(AbstractValueObject $valueObject, mixed $compareTo)
     {
-        $this->assertTrue(!$value1->equals($value2), sprintf('Value object %s should not have been considered equal to Value object %s', $value1::class, $value2::class));
+        $this->assertTrue(!$valueObject->equals($compareTo), sprintf('Value object %s should not have been considered equal to Value object %s', $valueObject::class, gettype($compareTo)));
     }
 
     private function equalValueObjects(): array
     {
         $testDate1 = new DateTime('2022-01-01 00:00:01');
         $testDate2 = new DateTime('2022-01-01 00:00:01');
+
         $oneLevel1 = new OneLevelValueObject('Test', 1.25);
         $oneLevel2 = new OneLevelValueObject('Test', 1.25);
+
         $nested1 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate1);
         $nested2 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate2);
+
         $multiNested1 = new ThreeLevelValueObject($nested1, $nested2, 'Test');
         $multiNested2 = new ThreeLevelValueObject($nested1, $nested2, 'Test');
 
         $multiNested3 = new ThreeLevelValueObject($nested2, $nested2, 'Test');
         $multiNested4 = new ThreeLevelValueObject($nested1, $nested1, 'Test');
+
         return [
             'One level value object' => [$oneLevel1, $oneLevel2],
             'Nested value object' => [$nested1, $nested2],
@@ -62,7 +66,11 @@ class ValueObjectTest extends TestCase
         $twoLevel2 = new TwoLevelValueObject($oneLevel1, $oneLevel1, $testDate2);
         return [
             'One level value object' => [$oneLevel1, $oneLevel2],
-            'Nested value object' => [$twoLevel1, $twoLevel2]
+            'Nested value object' => [$twoLevel1, $twoLevel2],
+            'Scalar value' => [$oneLevel1, 'String'],
+            'Null value' => [$oneLevel1, null],
+            'Boolean value' => [$oneLevel1, true],
+            'Random object' => [$oneLevel1, (object)[]]
         ];
     }
 }
