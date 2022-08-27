@@ -40,7 +40,7 @@ class ValueObjectTest extends TestCase
         $oneLevel2 = new OneLevelValueObject('Test', 1.25);
 
         $nested1 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate1);
-        $nested2 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate2);
+        $nested2 = new TwoLevelValueObject($oneLevel1, $oneLevel2, $testDate2, 'This is not equated because it is public');
 
         $multiNested1 = new ThreeLevelValueObject($nested1, $nested2, 'Test');
         $multiNested2 = new ThreeLevelValueObject($nested1, $nested2, 'Test');
@@ -48,11 +48,23 @@ class ValueObjectTest extends TestCase
         $multiNested3 = new ThreeLevelValueObject($nested2, $nested2, 'Test');
         $multiNested4 = new ThreeLevelValueObject($nested1, $nested1, 'Test');
 
+        $scalarValue1 = new class('Scalar') extends AbstractValueObject
+        {
+            public function __construct(private string $scalar)
+            {
+            }
+        };
+        $scalarValue2 = clone $scalarValue1;
+
+        $clonedMultiNested = clone $multiNested4;
+
         return [
             'One level value object' => [$oneLevel1, $oneLevel2],
             'Nested value object' => [$nested1, $nested2],
             'Multi nested value object' => [$multiNested1, $multiNested2],
-            'Multi nested value object from different instances' => [$multiNested3, $multiNested4]
+            'Multi nested value object from different instances' => [$multiNested3, $multiNested4],
+            'Cloned scalar value' => [$scalarValue1, $scalarValue2],
+            'Cloned multi nested value' => [$multiNested4, $clonedMultiNested]
         ];
     }
 

@@ -8,22 +8,22 @@ use Ajo\Tdd\Examples\Common\ValueObjects\AbstractValueObject;
 use InvalidArgumentException;
 use Stringable;
 
-abstract class AbstractId extends AbstractValueObject implements Stringable
+class Email extends AbstractValueObject implements Stringable
 {
-    public function __construct(protected readonly string $id)
+    public function __construct(private string $email)
     {
-        if (mb_strlen($id) < 1) {
-            throw new InvalidArgumentException('ID cannot be an empty string');
+        if(filter_var($email, FILTER_VALIDATE_EMAIL) === false)
+        {
+            throw new InvalidArgumentException('Invalid e-mail address given');
         }
     }
-
     public function toString(): string
     {
         return (string)$this;
     }
-
     public function __toString(): string
     {
-        return $this->id;
+        return $this->email;
     }
+    
 }

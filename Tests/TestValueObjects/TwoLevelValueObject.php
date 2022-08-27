@@ -12,7 +12,8 @@ class TwoLevelValueObject extends AbstractValueObject
     public function __construct(
         private OneLevelValueObject $oneLevel,
         private OneLevelValueObject $oneLevel2,
-        public readonly DateTime $dateTime
+        public readonly DateTime $dateTime,
+        public ?string $publicValue = 'Publics are not equated'
     ) {
     }
 }
