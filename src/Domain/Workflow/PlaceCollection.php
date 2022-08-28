@@ -4,20 +4,29 @@ declare(strict_types=1);
 
 namespace Ajo\Tdd\Examples\Common\Domain\Workflow;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use ArrayObject;
+use TypeError;
 
-class PlaceCollection implements Countable, IteratorAggregate
+class PlaceCollection extends ArrayObject
 {
-    private array $places = [];
-    public function getIterator(): Traversable
+    public function __construct(Place ...$places)
     {
-        return new ArrayIterator($this->places);
+        parent::__construct(...$places);
     }
-    public function count(): int
+    public function offsetSet(mixed $key, mixed $value): void
     {
-        return count($this->places);
+        if(
+            $value === null ||
+            !$value instanceof Place
+        ) {
+            throw new TypeError(
+                sprintf('Expected type "%s"', Place::class)
+            );
+        }
+        parent::offsetSet($key, $value);
+    }
+    public function offsetGet(mixed $key): Place
+    {
+        return parent::offsetGet($key);
     }
 }

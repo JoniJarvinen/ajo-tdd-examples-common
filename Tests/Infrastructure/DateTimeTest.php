@@ -25,8 +25,8 @@ class DateTimeTest extends TestCase
      */
     public function should_be_equal(): void
     {
-        $date1 = new DateTime('2022-01-01 00:00:00.00');
-        $date2 = new DateTime('2022-01-01 00:00:00.000');
+        $date1 = (new DateTime('2022-01-01 00:00:00.00'))->timezone('Europe/Helsinki');
+        $date2 = (new DateTime('2022-01-01 00:00:00.000'))->timezone('UTC');
         $this->assertTrue($date1->equals($date2), sprintf('Expected "%s" to be equal to: "%s"', $date1->toString(), $date2->toString()));
     }
 
